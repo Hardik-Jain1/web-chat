@@ -1,0 +1,22 @@
+[theme]
+primaryColor = "#FF6B6B"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F8F9FA"
+textColor = "#2C3E50"
+font = "sans serif"
+
+[server]
+enableCORS = false
+port = 8501
+enableWebsocketCompression = false
+
+[global]
+maxWidth = "1200px"
+dataFrameSerialization = "arrow"
+
+[browser]
+gatherUsageStats = false
+
+[runner]
+magicEnabled = true
+installTracer = false
