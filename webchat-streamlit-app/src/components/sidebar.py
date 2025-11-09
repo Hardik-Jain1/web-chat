@@ -1,5 +1,10 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
 from services.ai_provider import AIProviderFactory, AIProviderManager
+
+# Load environment variables
+load_dotenv()
 
 
 class Sidebar:

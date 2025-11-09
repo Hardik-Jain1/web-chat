@@ -1,15 +1,17 @@
 # 🤖 WebChat AI Assistant
 
-A powerful Streamlit application that lets you chat with any website using **OpenAI GPT** or **Google Gemini**. Simply provide a URL, and the AI will learn from the website content to answer your questions!
+ChatBot uses the RAG(Retrieval Augmented Generation) technique to interact with a given website URL and answer the questions about that website.
+
+Simply provide a URL, and the AI will learn from the website content to answer your questions!
+
+This Chatbot uses the RAG(Retrieval Augmented Generation) technique to get the web scraped data, store it in a vector database, and then retrieve the relevant context from it (w.r.t to the asked question) to provide it to the LLM(ChatGPT) along with question which then generates the relevant output. 
 
 ## ✨ Features
 
-- 🔄 **Dual AI Provider Support**: Choose between OpenAI GPT and Google Gemini
 - 🌐 **Website Content Extraction**: Fetch and process content from any URL
 - 💬 **Interactive Chat Interface**: Modern chat UI with message history
 - 📚 **Source Attribution**: See which parts of the website were used to answer your questions
 - ⚙️ **Customizable Settings**: Adjust AI temperature, chunk sizes, and more
-- 🎨 **Beautiful UI**: Clean, modern interface with responsive design
 - 📊 **Real-time Statistics**: Track processing stats and chat metrics
 
 ## 🏗️ Project Structure
@@ -136,17 +138,6 @@ streamlit run src/app.py
 
 ## 🎨 Customization
 
-### Themes
-Edit `.streamlit/config.toml` to customize the app appearance:
-
-```toml
-[theme]
-primaryColor = "#FF6B6B"          # Accent color
-backgroundColor = "#FFFFFF"        # Background
-secondaryBackgroundColor = "#F8F9FA"  # Sidebar background
-textColor = "#2C3E50"             # Text color
-```
-
 ### Prompts
 Modify `src/templates/prompt_templates.py` to customize AI responses:
 
@@ -156,58 +147,6 @@ def get_qa_chain_prompt(website_name: str = "YourWebsite"):
     template = f"""Your custom prompt for {website_name}..."""
     return PromptTemplate.from_template(template)
 ```
-
-## 🚀 Deployment
-
-### Local Development
-```bash
-streamlit run src/app.py --server.port 8501
-```
-
-### Streamlit Cloud
-1. Push to GitHub
-2. Connect to [Streamlit Cloud](https://streamlit.io/cloud)
-3. Add your API keys as secrets
-4. Deploy!
-
-### Docker (Optional)
-```dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY src/ ./src/
-COPY .streamlit/ ./.streamlit/
-
-EXPOSE 8501
-
-CMD ["streamlit", "run", "src/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **"Import could not be resolved"**
-   - Make sure virtual environment is activated
-   - Run `pip install -r requirements.txt`
-
-2. **API Key Errors**
-   - Check your API key is correct
-   - Ensure you have sufficient API credits
-   - Verify the key permissions
-
-3. **Website Fetching Fails**
-   - Check if the website allows scraping
-   - Try different URLs
-   - Ensure stable internet connection
-
-4. **Slow Performance**
-   - Reduce chunk size in settings
-   - Use smaller websites
-   - Check your internet speed
 
 ## 📈 Features Roadmap
 
@@ -220,56 +159,6 @@ CMD ["streamlit", "run", "src/app.py", "--server.port=8501", "--server.address=0
 - [ ] 🎤 Voice input/output
 - [ ] 📱 Mobile optimization
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -am 'Add feature'`
-4. Push to branch: `git push origin feature-name`
-5. Submit a Pull Request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Streamlit](https://streamlit.io/) for the amazing web framework
-- [LangChain](https://langchain.com/) for AI/LLM integration
-- [OpenAI](https://openai.com/) for GPT models
-- [Google](https://ai.google/) for Gemini models
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting](#🐛-troubleshooting) section
-2. Open an issue on GitHub
-3. Contact the development team
-
----
-
-**Happy Chatting! 🚀**
-   - Copy `.env.example` to `.env` and add your OpenAI API key:
-     ```
-     OPENAI_API_KEY=your_api_key_here
-     ```
-
-5. **Run the Streamlit application:**
-   ```
-   streamlit run src/app.py
-   ```
-
-## Usage
-
-- Enter the URL from which you want to fetch data when prompted.
-- Use the sidebar to adjust settings and options.
-- Ask questions in the chat interface to interact with the chatbot.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.

@@ -1,5 +1,9 @@
 import os
+from dotenv import load_dotenv
 import streamlit as st
+
+# Load environment variables
+load_dotenv()
 
 def load_config():
     """Load configuration including API keys and provider settings"""

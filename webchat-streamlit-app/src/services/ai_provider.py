@@ -1,48 +1,72 @@
 """
 AI Provider Factory for handling different AI services (OpenAI, Gemini)
 """
+import os
+from dotenv import load_dotenv
 import streamlit as st
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 from langchain_openai import OpenAI, OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+
+# Load environment variables
+load_dotenv()
 
 
 class AIProviderFactory:
     """Factory class to create AI providers based on selection"""
     
     @staticmethod
-    def create_llm(provider: str, api_key: str, temperature: float = 0.3) -> Any:
-        """Create a language model instance based on provider"""
+    def get_api_key(provider: str, ui_api_key: str = "") -> str:
+        """Get API key from UI input or environment"""
+        if ui_api_key.strip():
+            return ui_api_key.strip()
+        
+        # Fall back to environment variables
         if provider == "openai":
-            if not api_key:
-                raise ValueError("OpenAI API key is required")
+            return os.getenv("OPENAI_API_KEY", "")
+        elif provider == "gemini":
+            return os.getenv("GOOGLE_API_KEY", "")
+        
+        return ""
+    
+    @staticmethod
+    def create_llm(provider: str, api_key: str = "", temperature: float = 0.3) -> Any:
+        """Create a language model instance based on provider"""
+        # Get actual API key
+        actual_api_key = AIProviderFactory.get_api_key(provider, api_key)
+        
+        if not actual_api_key:
+            raise ValueError(f"API key not found for {provider}. Please provide it in the UI or set environment variable.")
+        
+        if provider == "openai":
             return OpenAI(
-                openai_api_key=api_key,
+                openai_api_key=actual_api_key,
                 temperature=temperature
             )
         elif provider == "gemini":
-            if not api_key:
-                raise ValueError("Google API key is required")
             return GoogleGenerativeAI(
-                google_api_key=api_key,
-                model="gemini-2.0-flash",
+                google_api_key=actual_api_key,
+                model="gemini-2.5-flash",
                 temperature=temperature
             )
         else:
             raise ValueError(f"Unsupported provider: {provider}")
     
     @staticmethod
-    def create_embeddings(provider: str, api_key: str) -> Any:
+    def create_embeddings(provider: str, api_key: str = "") -> Any:
         """Create embeddings instance based on provider"""
+        # Get actual API key
+        actual_api_key = AIProviderFactory.get_api_key(provider, api_key)
+        
+        if not actual_api_key:
+            raise ValueError(f"API key not found for {provider}. Please provide it in the UI or set environment variable.")
+        
         if provider == "openai":
-            if not api_key:
-                raise ValueError("OpenAI API key is required")
-            return OpenAIEmbeddings(openai_api_key=api_key)
+            return OpenAIEmbeddings(openai_api_key=actual_api_key)
         elif provider == "gemini":
-            if not api_key:
-                raise ValueError("Google API key is required")
+            print("Creating Gemini embeddings")
             return GoogleGenerativeAIEmbeddings(
-                google_api_key=api_key,
+                google_api_key=actual_api_key,
                 model="models/embedding-001"
             )
         else:
@@ -69,7 +93,7 @@ class AIProviderFactory:
                 return True
             elif provider == "gemini":
                 # Simple validation - try to create client
-                GoogleGenerativeAI(google_api_key=api_key, model="gemini-pro")
+                GoogleGenerativeAI(google_api_key=api_key, model="gemini-2.5-flash")
                 return True
         except Exception:
             return False

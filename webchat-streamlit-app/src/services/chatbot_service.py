@@ -1,8 +1,13 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import FAISS
 from services.ai_provider import AIProviderManager, AIProviderFactory
 from templates.prompt_templates import get_qa_chain_prompt
+
+# Load environment variables
+load_dotenv()
 
 
 class ChatbotService:
@@ -32,13 +37,13 @@ class ChatbotService:
             
             # Get embeddings instance
             embeddings = self.ai_manager.get_embeddings()
-            
+            print("embeddings created")
             # Create vector store
             self.vector_store = FAISS.from_documents(self.docs, embeddings)
-            
+            print("vector store created")
             # Setup QA chain
             self._setup_qa_chain()
-            
+            print("QA chain created")
             return True
             
         except Exception as e:

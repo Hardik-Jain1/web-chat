@@ -1,1 +1,8 @@
 webchat-streamlit-app/.env
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.Python
+**/.pytest_cache
+**/.cache

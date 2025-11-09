@@ -1,8 +1,9 @@
 """
 Main WebChat Streamlit Application with AI Provider Selection
 """
-import streamlit as st
 import os
+from dotenv import load_dotenv
+import streamlit as st
 from components.chat_interface import ChatInterface
 from components.sidebar import Sidebar
 from services.data_fetcher import DataFetcher
@@ -10,6 +11,9 @@ from services.document_processor import DocumentProcessor
 from services.chatbot_service import ChatbotService
 from services.ai_provider import AIProviderManager
 from utils.config import load_config, get_session_config
+
+# Load environment variables at the start
+load_dotenv()
 
 
 def initialize_app():

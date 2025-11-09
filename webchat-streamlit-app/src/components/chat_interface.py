@@ -1,9 +1,14 @@
 """
 Chat interface component for the WebChat application
 """
+import os
+from dotenv import load_dotenv
 import streamlit as st
 from typing import Optional, Dict, Any
 import time
+
+# Load environment variables
+load_dotenv()
 
 
 class ChatInterface:
